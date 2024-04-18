@@ -12,6 +12,7 @@ const Main = () => {
     setInput,
     resultData,
   }: any = useContext(Context);
+
   return (
     <div className="main">
       <div className="nav">
@@ -79,7 +80,9 @@ const Main = () => {
             <div>
               <img src={assets.gallery_icon} alt="" />
               <img src={assets.mic_icon} alt="" />
-              <img onClick={() => onSent()} src={assets.send_icon} alt="" />
+              {input ? (
+                <img onClick={() => onSent()} src={assets.send_icon} alt="" />
+              ) : null}
             </div>
           </div>
           <p className="bottom-info">

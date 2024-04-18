@@ -1,8 +1,16 @@
 import "./Sidebar.css";
 import { assets } from "../../assets/assets";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Context } from "../../context/Context.jsx";
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const { onSent, newChat, prevPrompt, setRecentPrompt }: any =
+    useContext(Context);
+
+  const loadPrompt = async (prompt: any) => {
+    setRecentPrompt(prompt);
+    await onSent(prompt);
+  };
 
   return (
     <div className="sidebar">
@@ -13,17 +21,21 @@ const Sidebar = () => {
           className="menu"
           onClick={() => setSidebarOpen((prev) => !prev)}
         />
-        <div className="new-chat">
+        <div onClick={() => newChat()} className="new-chat">
           <img src={assets.plus_icon} alt="" />
           {sidebarOpen ? <p>New Chat</p> : null}
         </div>
         {sidebarOpen ? (
           <div className="recent">
             <p className="recent-title">Recent</p>
-            <div className="recent-entry">
-              <img src={assets.message_icon} alt="" />
-              <p>What is React.....</p>
-            </div>
+            {prevPrompt.map((item: any) => {
+              return (
+                <div onClick={() => loadPrompt(item)} className="recent-entry">
+                  <img src={assets.message_icon} alt="" />
+                  <p>{item}</p>
+                </div>
+              );
+            })}
           </div>
         ) : null}
       </div>
